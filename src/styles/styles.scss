@@ -1,0 +1,90 @@
+// Defaults
+@import './_variables';
+
+.App {
+    display: flex;
+    flex-direction: column;
+
+    header {
+        display: flex;
+        justify-content: center;
+
+        .header-container {
+            text-align: center;
+            width: 820px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+    
+            .nav__interactive {
+                display: flex;
+                justify-content: space-between;
+    
+                &__pagination {
+                    padding: 0 8px;
+
+                    &.--inactive {
+                        display: none;
+                    }
+                }
+
+                &__nav_arrow {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    .search-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .table-container {
+        display: flex;
+        justify-content: center;
+
+        &__table {
+            display: table;
+            width: 820px;
+        
+            &__row {
+                display: table-row;
+            }
+        
+            &__header {
+                background-color: transparent;
+                display: table-row;
+                font-weight: 600;
+            }
+        
+            &__row {
+                &:nth-child(even) {
+                    background-color: $dark-grey;
+                }
+                &.--no-data {
+                    background: transparent;
+                }
+            }
+        
+            &__data {
+                display: table-cell;
+                padding: 5px;
+                white-space: nowrap;
+            }
+        
+            &__columnHeader {
+                &--sortable {
+                    cursor: pointer;
+                }
+            }
+        
+            &__sortArrow {
+                font-size: 16px;
+                margin: 0 0 0 3px;
+            }
+        }
+    }
+}
