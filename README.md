@@ -16,7 +16,7 @@ In order to start and run this project, please do the following:
 
 This program renders a list of NFL Players with a large amount of data. The user can navigate and collect the data by doing the following:
 
-a) sorting Ascending/Descending via three fields -- Total Rushing Yards (Yds), Longest Rush (Lng), and Total Rushing Touchdowns (TD),
-b) searching for a Player in the list by using the Textbox,
-c) using Pagination to shorten the size of the list,
-d) and export a CSV file when they have collected and sorted through the data that they want.
+1) sorting Ascending/Descending via three fields -- Total Rushing Yards (Yds), Longest Rush (Lng), and Total Rushing Touchdowns (TD),
+2) searching for a Player in the list by using the Textbox,
+3) using Pagination to shorten the size of the list,
+4) and export a CSV file when they have collected and sorted through the data that they want.
