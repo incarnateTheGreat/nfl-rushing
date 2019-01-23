@@ -1,5 +1,6 @@
 // Defaults
 @import './_variables';
+@import './table';
 
 .App {
     display: flex;
@@ -40,51 +41,5 @@
     .search-container {
         display: flex;
         justify-content: center;
-    }
-
-    .table-container {
-        display: flex;
-        justify-content: center;
-
-        &__table {
-            display: table;
-            width: 820px;
-        
-            &__row {
-                display: table-row;
-            }
-        
-            &__header {
-                background-color: transparent;
-                display: table-row;
-                font-weight: 600;
-            }
-        
-            &__row {
-                &:nth-child(even) {
-                    background-color: $dark-grey;
-                }
-                &.--no-data {
-                    background: transparent;
-                }
-            }
-        
-            &__data {
-                display: table-cell;
-                padding: 5px;
-                white-space: nowrap;
-            }
-        
-            &__columnHeader {
-                &--sortable {
-                    cursor: pointer;
-                }
-            }
-        
-            &__sortArrow {
-                font-size: 16px;
-                margin: 0 0 0 3px;
-            }
-        }
     }
 }
