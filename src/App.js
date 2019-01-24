@@ -62,7 +62,7 @@ search(input) {
 	});
 }
 
-clearArrows = () => {
+clearArrows() {
 	const columnElems = document.getElementsByClassName('table-container__table__columnHeader');
 
 	// Find and Remove Arrow.
@@ -107,9 +107,7 @@ sortColumn(col, sortOrder, e) {
 exportCSV() {
 	// Get the Headers.
 	const headerRow = [...Object.keys(this.state.result[0])];
-	// const index = headerRow.findIndex(header => header === this.state.sortColumn);
-	// headerRow[index] =  `${headerRow[index]} ${this.getSortOrder(this.state.sortOrder)}`;
-	
+
 	// Print out the headers.
 	let csv = headerRow.join(',') + '\n';
 

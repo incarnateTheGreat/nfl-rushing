@@ -6,6 +6,8 @@ In order to start and run this project, please do the following:
 
 1. Clone this project to your computer. The Repository URL is https://github.com/incarnateTheGreat/nfl-rushing.git. If operating by command line, simply run 'git clone https://github.com/incarnateTheGreat/nfl-rushing.git'
 
+**NOTE**: Before starting the following step, please make sure your Node version is the latest -- at least above 8.9.1
+
 2. When the Clone process has successfully completed, run `npm i` to install all necessary dependencies.
 
 3. When the dependencies have successfully installed, run the application by typing either 'npm start' or 'yarn start'.
