@@ -63,6 +63,7 @@
 
                     &.--inactive {
                         color: $dark-grey;
+                        cursor: default;
                         display: none;
                     }
                 }
@@ -72,6 +73,7 @@
 
                     &.--inactive {
                         color: $dark-grey;
+                        cursor: default;
                     }
                 }
             }

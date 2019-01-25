@@ -35,12 +35,11 @@ class App extends Component {
 	isPaginationActive: true,
 	pageNumber: 1,
 	rushingData: null,
-	rangePerPage: 50,
+	rangePerPage: 40,
 	result: null,
 	query: null,
 	sortOrder: 'ASC',
-	sortColumn: null,
-	toRange: 50
+	sortColumn: null
   };
 
 clearArrows() {
@@ -84,8 +83,8 @@ getResultRows() {
 
 	if (this.state.result) {
 		// Display Paginated results if there's sufficient data and Pagination is enabled.
-		if (this.state.result.length >= 50 && this.state.isPaginationActive) {
-			for (let i = this.state.fromRange; i <= this.state.toRange; i++) {
+		if ((this.state.result.length >= this.state.rangePerPage) && this.state.isPaginationActive) {
+			for (let i = this.state.fromRange; i <= (this.state.rangePerPage + this.state.fromRange); i++) {				
 				if (this.state.result[i] !== undefined) {
 					result.push(this.state.result[i]);
 				}
@@ -103,13 +102,17 @@ getSortOrder(sortOrder) {
 	return sortOrder === 'ASC' ? UP_ARROW : DOWN_ARROW
 }
 
+isThereMoreData() {
+	return (this.state.fromRange + this.state.rangePerPage) < this.state.result.length;
+}
+
 nextPage() {
 	// Pagination: navigate to the next page.
-	if (this.state.toRange < this.state.result.length) {
+	// Prevent the User from going to the Next page if there will be no more data.
+	if (this.isThereMoreData()) {
 		this.setState({
-			fromRange: this.state.fromRange + 50,
-			pageNumber: this.state.pageNumber + 1,
-			toRange: this.state.toRange + 50
+			fromRange: this.state.fromRange + this.state.rangePerPage,
+			pageNumber: this.state.pageNumber + 1
 		})
 	}
 }
@@ -118,9 +121,8 @@ previousPage() {
 	// Pagination: navigate to the previous page.
 	if (this.state.pageNumber > 1) {
 		this.setState({
-			fromRange: this.state.fromRange - 50,
-			pageNumber: (this.state.pageNumber > 1 ? this.state.pageNumber - 1 : this.state.pageNumber),
-			toRange: this.state.toRange - 50
+			fromRange: this.state.fromRange - this.state.rangePerPage,
+			pageNumber: (this.state.pageNumber > 1 ? this.state.pageNumber - 1 : this.state.pageNumber)
 		});
 	}
 }
@@ -139,8 +141,7 @@ search(input) {
 		fromRange: 0,
 		pageNumber: 1,
 		query: input.target.value,
-		result,
-		toRange: 50
+		result
 	});
 }
 
@@ -214,7 +215,7 @@ render() {
 		);
 		paginationToArrowClasses = classNames(
 			'nav__interactive__nav_arrow right_arrow',
-			this.state.toRange > this.state.result.length ? '--inactive' : ''
+			this.isThereMoreData() ? '' : '--inactive'
 		);
 	}
 
