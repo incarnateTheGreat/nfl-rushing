@@ -187,10 +187,13 @@ componentDidMount() {
 	}, () => {
 		// Render Pagination Arrows.
 		const left_arrow = document.getElementsByClassName("left_arrow")[0];
-		left_arrow.insertAdjacentHTML('beforeend', LEFT_ARROW);
-
 		const right_arrow = document.getElementsByClassName("right_arrow")[0];
-		right_arrow.insertAdjacentHTML('beforeend', RIGHT_ARROW);
+
+		// Check to prevent test failures.
+		if(left_arrow !== undefined) {
+			left_arrow.insertAdjacentHTML('beforeend', LEFT_ARROW);
+			right_arrow.insertAdjacentHTML('beforeend', RIGHT_ARROW);
+		}
 	});
 }
 
