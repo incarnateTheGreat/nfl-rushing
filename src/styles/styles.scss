@@ -28,6 +28,7 @@
                 color: $white;
                 cursor: pointer;
                 font-size: $font-size-small;
+                font-weight: bold;
                 padding: 8px 12px;
                 transition: background-color 0.1s;
                 width: 140px;
@@ -39,10 +40,9 @@
             }
 
             .searchInput {
-                background-color: white;
-                border: 1px solid #cdcdcd;
-                border-color: rgba(0, 0, 0, .15);
-                font-size: 16px;
+                background-color: $white;
+                border: 1px solid $dark-grey;
+                font-size: $font-size-base;
                 flex-basis: 40%;
                 height: 30px;
                 outline: none;
@@ -130,3 +130,24 @@
     }
 }
   
+@media only screen and (max-width: 520px) {
+    .App {
+        header {
+            nav {
+                .searchInput {
+                    flex-basis: 85%;
+                }
+
+                .nav__interactive {
+                    flex-basis: 85%;
+                    justify-content: center;
+                    margin: 0 0 15px;
+                }
+
+                .exportCSV {
+                    flex-basis: 85%;
+                }
+            }
+        }
+    }
+}
