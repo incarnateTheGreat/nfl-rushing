@@ -27,12 +27,17 @@
                     padding: 0 8px;
 
                     &.--inactive {
+                        color: $dark-grey;
                         display: none;
                     }
                 }
 
                 &__nav_arrow {
                     cursor: pointer;
+
+                    &.--inactive {
+                        color: $dark-grey;
+                    }
                 }
             }
         }

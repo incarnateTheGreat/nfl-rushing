@@ -32,6 +32,7 @@ function sortColumnData(columnData, col, sortOrder) {
 class App extends Component {
   state = {
 	fromRange: 0,
+	isPaginationActive: true,
 	pageNumber: 1,
 	rushingData: null,
 	rangePerPage: 50,
@@ -39,9 +40,90 @@ class App extends Component {
 	query: null,
 	sortOrder: 'ASC',
 	sortColumn: null,
-	toRange: 50,
-	isPaginationActive: true
+	toRange: 50
   };
+
+clearArrows() {
+	const columnElems = document.getElementsByClassName('table-container__table__columnHeader');
+
+	// Find and Remove Arrow.
+	for (let i = 0; i < columnElems.length; i++) {
+		if (columnElems[i].children.length > 0) columnElems[i].removeChild(columnElems[i].children[0])
+	}
+}
+
+exportCSV() {
+	// Get the Headers.
+	const headerRow = [...Object.keys(this.state.result[0])];
+
+	// Print out the headers.
+	let csv = headerRow.join(',') + '\n';
+
+	// Loop through all lines of data and create rows.
+	for (let line of this.getResultRows()) {
+		csv += Object.values(line).map(e => {
+			// Parse any comma Strings to Floats.
+			if (typeof e === 'string' && e.indexOf(',') > -1) {
+				e = parseFloat(e.replace(',',''))
+			}
+
+			return e;
+		}).join(',') + '\n';
+	}
+	
+	// Encode the CSV data and then allow the user to download the generated file.
+	const encodedUri = encodeURI(csv);
+	const link = document.createElement("a");
+	link.setAttribute("href", "data:text/csv;charset=utf-8," + encodedUri);
+	link.setAttribute("download", "nfl-rushing.csv");
+	link.click();
+}
+
+getResultRows() {
+	let result = [];
+
+	if (this.state.result) {
+		// Display Paginated results if there's sufficient data and Pagination is enabled.
+		if (this.state.result.length >= 50 && this.state.isPaginationActive) {
+			for (let i = this.state.fromRange; i <= this.state.toRange; i++) {
+				if (this.state.result[i] !== undefined) {
+					result.push(this.state.result[i]);
+				}
+			}
+		} else {
+			// Render everything.
+			result = [...this.state.result];
+		}
+	}
+
+	return result;
+}
+
+getSortOrder(sortOrder) {
+	return sortOrder === 'ASC' ? UP_ARROW : DOWN_ARROW
+}
+
+nextPage() {
+	// Pagination: navigate to the next page.
+	if (this.state.toRange < this.state.result.length) {
+		this.setState({
+			fromRange: this.state.fromRange + 50,
+			pageNumber: this.state.pageNumber + 1,
+			toRange: this.state.toRange + 50
+		})
+	}
+}
+
+previousPage() {
+	// Pagination: navigate to the previous page.
+	if (this.state.pageNumber > 1) {
+		this.setState({
+			fromRange: this.state.fromRange - 50,
+			pageNumber: (this.state.pageNumber > 1 ? this.state.pageNumber - 1 : this.state.pageNumber),
+			toRange: this.state.toRange - 50
+		});
+	}
+}
 
 search(input) {
 	// Search and return a Player using part of or the entire name.
@@ -60,19 +142,6 @@ search(input) {
 		result,
 		toRange: 50
 	});
-}
-
-clearArrows() {
-	const columnElems = document.getElementsByClassName('table-container__table__columnHeader');
-
-	// Find and Remove Arrow.
-	for (let i = 0; i < columnElems.length; i++) {
-		if (columnElems[i].children.length > 0) columnElems[i].removeChild(columnElems[i].children[0])
-	}
-}
-
-getSortOrder(sortOrder) {
-	return sortOrder === 'ASC' ? UP_ARROW : DOWN_ARROW
 }
 
 sortColumn(col, sortOrder, e) {		
@@ -104,81 +173,13 @@ sortColumn(col, sortOrder, e) {
 	});
 }
 
-exportCSV() {
-	// Get the Headers.
-	const headerRow = [...Object.keys(this.state.result[0])];
-
-	// Print out the headers.
-	let csv = headerRow.join(',') + '\n';
-
-	// Loop through all lines of data and create rows.
-	for (let line of this.getResultRows()) {
-		csv += Object.values(line).map(e => {
-			// Parse any comma Strings to Floats.
-			if (typeof e === 'string' && e.indexOf(',') > -1) {
-				e = parseFloat(e.replace(',',''))
-			}
-
-			return e;
-		}).join(',') + '\n';
-	}
-	
-	// Encode the CSV data and then allow the user to download the generated file.
-	const encodedUri = encodeURI(csv);
-	const link = document.createElement("a");
-	link.setAttribute("href", "data:text/csv;charset=utf-8," + encodedUri);
-	link.setAttribute("download", "nfl-rushing.csv");
-	link.click();
-}
-
-nextPage() {
-	// Pagination: navigate to the next page.
-	if (this.state.toRange < this.state.result.length) {
-		this.setState({
-			fromRange: this.state.fromRange + 50,
-			pageNumber: this.state.pageNumber + 1,
-			toRange: this.state.toRange + 50
-		})
-	}
-}
-
-previousPage() {
-	// Pagination: navigate to the previous page.
-	if (this.state.pageNumber > 1) {
-		this.setState({
-			fromRange: this.state.fromRange - 50,
-			pageNumber: (this.state.pageNumber > 1 ? this.state.pageNumber - 1 : this.state.pageNumber),
-			toRange: this.state.toRange - 50
-		});
-	}
-}
-
-getResultRows() {
-	let result = [];
-
-	if (this.state.result) {
-		// Display Paginated results if there's sufficient data and Pagination is enabled.
-		if (this.state.result.length >= 50 && this.state.isPaginationActive) {
-			for (let i = this.state.fromRange; i <= this.state.toRange; i++) {
-				if (this.state.result[i] !== undefined) {
-					result.push(this.state.result[i]);
-				}
-			}
-		} else {
-			// Render everything.
-			result = [...this.state.result];
-		}
-	}
-
-	return result;
-}
-
 togglePagination(e) {
 	this.setState({
 		isPaginationActive: e.target.checked
 	})
 }
 
+// React Lifecycles
 componentDidMount() {
 	this.setState({
 		rushingData,
@@ -198,8 +199,22 @@ render() {
 	const paginationClasses = classNames(
 		'nav__interactive__pagination',
 		this.state.isPaginationActive ? '' : '--inactive'
-	)
-
+	);
+	let paginationFromArrowClasses = null;
+	let paginationToArrowClasses = null;
+	
+	// Set classes for Pagination controls.
+	if (this.state.result) {
+		paginationFromArrowClasses = classNames(
+			'nav__interactive__nav_arrow left_arrow',
+			this.state.pageNumber === 1 ? '--inactive' : ''
+		);
+		paginationToArrowClasses = classNames(
+			'nav__interactive__nav_arrow right_arrow',
+			this.state.toRange > this.state.result.length ? '--inactive' : ''
+		);
+	}
+	
     return (
       <div className="App">
 	  	<div className="container">
@@ -211,9 +226,9 @@ render() {
 							<input type="checkbox" checked={this.state.isPaginationActive} onChange={this.togglePagination.bind(this)} />
 							<span>Pagination</span>
 							<div className={paginationClasses}>
-								<span className="nav__interactive__nav_arrow left_arrow" onClick={this.previousPage.bind(this)}></span>
+								<span className={paginationFromArrowClasses} onClick={this.previousPage.bind(this)}></span>
 								<span className="nav__interactive__pagination">Page {this.state.pageNumber}</span>
-								<span className="nav__interactive__nav_arrow right_arrow" onClick={this.nextPage.bind(this)}></span>
+								<span className={paginationToArrowClasses} onClick={this.nextPage.bind(this)}></span>
 							</div>
 						</div>
 						<input type="search" name="search" onChange={this.search.bind(this)} />
