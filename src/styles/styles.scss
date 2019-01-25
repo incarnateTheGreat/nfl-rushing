@@ -18,11 +18,28 @@
         nav {
             display: flex;
             justify-content: space-between;
-    
+
+            .exportCSV {
+              background-color: $primary-blue;
+              border: 2px solid $primary-blue;
+              border-radius: 2px;
+              color: $white;
+              cursor: pointer;
+              font-size: $font-size-small;
+              padding: 8px 12px;
+              transition: background-color 0.1s;
+
+              &:hover {
+                background-color: $white;
+                color: $black;
+              }
+            }
+
             .nav__interactive {
+                align-items: center;
                 display: flex;
                 justify-content: space-between;
-    
+
                 &__pagination {
                     padding: 0 8px;
 

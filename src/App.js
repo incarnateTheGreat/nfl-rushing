@@ -10,9 +10,9 @@ import './styles/styles.scss';
 // For the sake of cleaner data, parse out any letter characters that might impede sorting.
 function formatDataInput(variable) {
 	if (typeof variable === 'string') {
-		variable = variable.replace(/\D/g,'');		
+		variable = variable.replace(/\D/g,'');
 	}
-	
+
 	return variable;
 }
 
@@ -24,7 +24,7 @@ function sortColumnData(columnData, col, sortOrder) {
 		} else if (sortOrder === 'DESC') {
 			return formatDataInput(b[col]) - formatDataInput(a[col]);
 		}
-		
+
 		return 0;
 	});
 }
@@ -70,7 +70,7 @@ exportCSV() {
 			return e;
 		}).join(',') + '\n';
 	}
-	
+
 	// Encode the CSV data and then allow the user to download the generated file.
 	const encodedUri = encodeURI(csv);
 	const link = document.createElement("a");
@@ -134,17 +134,17 @@ search(input) {
 	if (result) {
 		result = sortColumnData(result, this.state.sortColumn, this.state.sortOrder)
 	}
-	
+
 	this.setState({
 		fromRange: 0,
 		pageNumber: 1,
-		query: input.target.value, 
+		query: input.target.value,
 		result,
 		toRange: 50
 	});
 }
 
-sortColumn(col, sortOrder, e) {		
+sortColumn(col, sortOrder, e) {
 	const elem = e.currentTarget || null;
 
 	// Change Order of Sort Direction.
@@ -202,7 +202,7 @@ render() {
 	);
 	let paginationFromArrowClasses = null;
 	let paginationToArrowClasses = null;
-	
+
 	// Set classes for Pagination controls.
 	if (this.state.result) {
 		paginationFromArrowClasses = classNames(
@@ -214,7 +214,7 @@ render() {
 			this.state.toRange > this.state.result.length ? '--inactive' : ''
 		);
 	}
-	
+
     return (
       <div className="App">
 	  	<div className="container">
@@ -232,7 +232,7 @@ render() {
 							</div>
 						</div>
 						<input type="search" name="search" onChange={this.search.bind(this)} />
-						<button type="button" onClick={this.exportCSV.bind(this)}>Export CSV</button>
+						<button type="button" className="exportCSV" onClick={this.exportCSV.bind(this)}>Export CSV</button>
 					</nav>
 				</div>
 		  	</header>
@@ -250,7 +250,7 @@ render() {
 						<div className='table-container__table__data table-container__table__columnHeader' title="Rushing Average Yards Per Attempt">Avg</div>
 						<div className='table-container__table__data table-container__table__columnHeader' title="Rushing Yards Per Game">Yds/G</div>
 						<div className='table-container__table__data table-container__table__columnHeader table-container__table__columnHeader--sortable'
-							title="Total Rushing Touchdowns" 
+							title="Total Rushing Touchdowns"
 							onClick={elem => this.sortColumn('TD', this.state.sortOrder, elem)}>TD</div>
 						<div className='table-container__table__data table-container__table__columnHeader table-container__table__columnHeader--sortable'
 							title="Longest Rush"

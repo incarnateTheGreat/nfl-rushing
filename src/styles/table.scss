@@ -6,17 +6,17 @@
     &__table {
         display: table;
         width: 820px;
-    
+
         &__row {
             display: table-row;
         }
-    
+
         &__header {
             background-color: transparent;
             display: table-row;
             font-weight: 600;
         }
-    
+
         &__row {
             &:nth-child(even) {
                 background-color: $dark-grey;
@@ -25,25 +25,33 @@
                 background: transparent;
             }
         }
-    
+
         &__data {
             display: table-cell;
-            padding: 5px;
+            padding: 10px 5px;
             white-space: nowrap;
         }
-    
+
         &__columnHeader {
             &--sortable {
                 cursor: pointer;
+                transition: background-color 0.1s;
+                
                 &:hover {
-                    background: $dark-grey;
+                    background-color: $dark-grey;
                 }
             }
         }
-    
+
         &__sortArrow {
             font-size: 16px;
             margin: 0 0 0 3px;
         }
     }
+}
+
+@media only screen and (max-width: 820px) {
+  .table-container {
+    width: 820px;
+  }
 }
