@@ -234,7 +234,7 @@ render() {
 								<span className={paginationToArrowClasses} onClick={this.nextPage.bind(this)}></span>
 							</div>
 						</div>
-						<input type="search" name="search" onChange={this.search.bind(this)} />
+						<input type="search" name="search" className="searchInput" placeholder="Search for a Player" onChange={this.search.bind(this)} />
 						<button type="button" className="exportCSV" onClick={this.exportCSV.bind(this)}>Export CSV</button>
 					</nav>
 				</div>

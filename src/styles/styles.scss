@@ -17,28 +17,46 @@
 
         nav {
             display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
             justify-content: space-between;
 
             .exportCSV {
-              background-color: $primary-blue;
-              border: 2px solid $primary-blue;
-              border-radius: 2px;
-              color: $white;
-              cursor: pointer;
-              font-size: $font-size-small;
-              padding: 8px 12px;
-              transition: background-color 0.1s;
+                background-color: $primary-blue;
+                border: 2px solid $primary-blue;
+                border-radius: 2px;
+                color: $white;
+                cursor: pointer;
+                font-size: $font-size-small;
+                padding: 8px 12px;
+                transition: background-color 0.1s;
+                width: 140px;
 
-              &:hover {
-                background-color: $white;
-                color: $black;
-              }
+                &:hover {
+                    background-color: $white;
+                    color: $black;
+                }
+            }
+
+            .searchInput {
+                background-color: white;
+                border: 1px solid #cdcdcd;
+                border-color: rgba(0, 0, 0, .15);
+                font-size: 16px;
+                flex-basis: 40%;
+                height: 30px;
+                outline: none;
+                padding: 10px;
+                transition: border 0.1s;
+
+                &:focus {
+                    border: 1px solid $primary-blue;
+                }
             }
 
             .nav__interactive {
                 align-items: center;
                 display: flex;
-                justify-content: space-between;
 
                 &__pagination {
                     padding: 0 8px;
@@ -65,3 +83,50 @@
         justify-content: center;
     }
 }
+
+@media only screen and (max-width: 660px) {
+    .App {
+        header {
+            nav {
+                justify-content: space-evenly;
+
+                .searchInput {
+                    flex-basis: 70%;
+                    margin: 0 0 15px;
+                    order: 1;
+                }
+
+                .nav__interactive {
+                    flex-basis: 35%;
+                    order: 2;
+                }
+
+                .exportCSV {
+                    flex-basis: 25%;
+                    order: 3;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 590px) {
+    .App {
+        header {
+            nav {
+                .searchInput {
+                    flex-basis: 85%;
+                }
+
+                .nav__interactive {
+                    flex-basis: 40%;
+                }
+
+                .exportCSV {
+                    flex-basis: 40%;
+                }
+            }
+        }
+    }
+}
+  
