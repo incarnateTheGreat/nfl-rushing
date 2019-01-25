@@ -5,6 +5,8 @@ import { DOWN_ARROW,
 		 UP_ARROW} from './constants/constants';
 import classNames from 'classnames';
 import { rushingData } from './data/rushing.js';
+import Header from './components/Header';
+import Row from './components/Row';
 import './styles/styles.scss';
 
 // For the sake of cleaner data, parse out any letter characters that might impede sorting.
@@ -35,7 +37,7 @@ class App extends Component {
 	isPaginationActive: true,
 	pageNumber: 1,
 	rushingData: null,
-	rangePerPage: 40,
+	rangePerPage: 50,
 	result: null,
 	query: null,
 	sortOrder: 'ASC',
@@ -183,6 +185,7 @@ togglePagination(e) {
 // React Lifecycles
 componentDidMount() {
 	this.setState({
+		headers: Object.keys(rushingData[0]),
 		rushingData,
 		result: rushingData,
 	}, () => {
@@ -217,29 +220,22 @@ render() {
 			'nav__interactive__nav_arrow right_arrow',
 			this.isThereMoreData() ? '' : '--inactive'
 		);
-	}
+	}	
 
     return (
       <div className="App">
 	  	<div className="container">
-			<header>
-				<div className="header-container">
-					<h2>NFL Rushing</h2>
-					<nav>
-						<div className="nav__interactive">
-							<input type="checkbox" checked={this.state.isPaginationActive} onChange={this.togglePagination.bind(this)} />
-							<span>Pagination</span>
-							<div className={paginationClasses}>
-								<span className={paginationFromArrowClasses} onClick={this.previousPage.bind(this)}></span>
-								<span className="nav__interactive__pagination">Page {this.state.pageNumber}</span>
-								<span className={paginationToArrowClasses} onClick={this.nextPage.bind(this)}></span>
-							</div>
-						</div>
-						<input type="search" name="search" className="searchInput" placeholder="Search for a Player" onChange={this.search.bind(this)} />
-						<button type="button" className="exportCSV" onClick={this.exportCSV.bind(this)}>Export CSV</button>
-					</nav>
-				</div>
-		  	</header>
+		  <Header 
+		  	exportCSV={this.exportCSV.bind(this)}
+			isPaginationActive={this.state.isPaginationActive}
+			nextPage={this.nextPage.bind(this)}
+			pageNumber={this.state.pageNumber}  
+			paginationClasses={paginationClasses}
+			paginationFromArrowClasses={paginationFromArrowClasses}
+			paginationToArrowClasses={paginationToArrowClasses}
+			previousPage={this.previousPage.bind(this)}
+			search={this.search.bind(this)}
+			togglePagination={this.togglePagination.bind(this)} />
 			<section className="table-container">
 				<div className="table-container__table">
 					<div className='table-container__table__header table-container__row departures'>
@@ -266,23 +262,9 @@ render() {
 						<div className='table-container__table__data table-container__table__columnHeader' title="Rushing Fumbles">FUM</div>
 					</div>
 					{result ? result.map((playerData, i) =>
-					<div className='table-container__table__row' key={i}>
-						<span className='table-container__table__data'>{playerData['Player']}</span>
-						<span className='table-container__table__data'>{playerData['Team']}</span>
-						<span className='table-container__table__data'>{playerData['Pos']}</span>
-						<span className='table-container__table__data'>{playerData['Att']}</span>
-						<span className='table-container__table__data'>{playerData['Att/G']}</span>
-						<span className='table-container__table__data'>{playerData['Yds']}</span>
-						<span className='table-container__table__data'>{playerData['Avg']}</span>
-						<span className='table-container__table__data'>{playerData['Yds/G']}</span>
-						<span className='table-container__table__data'>{playerData['TD']}</span>
-						<span className='table-container__table__data'>{playerData['Lng']}</span>
-						<span className='table-container__table__data'>{playerData['1st']}</span>
-						<span className='table-container__table__data'>{playerData['1st%']}</span>
-						<span className='table-container__table__data'>{playerData['20+']}</span>
-						<span className='table-container__table__data'>{playerData['40+']}</span>
-						<span className='table-container__table__data'>{playerData['FUM']}</span>
-					</div>
+						<div className='table-container__table__row' key={i}>
+							<Row {...playerData} />
+						</div>
 					) : (<div className='table-container__table__row --no-data'>
 						<span className='table-container__table__data'>None</span>
 						</div>)}
