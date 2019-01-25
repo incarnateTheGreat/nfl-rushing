@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { DOWN_ARROW,
 		 LEFT_ARROW,
 		 RIGHT_ARROW,
-		 UP_ARROW} from './constants/constants';
-import classNames from 'classnames';
-import { rushingData } from './data/rushing.js';
-import Header from './components/Header';
-import Row from './components/Row';
-import './styles/styles.scss';
+		 UP_ARROW} from "./constants/constants";
+import classNames from "classnames";
+import { rushingData } from "./data/rushing.js";
+import Header from "./components/Header";
+import Row from "./components/Row";
+import "./styles/styles.scss";
 
 // For the sake of cleaner data, parse out any letter characters that might impede sorting.
 function formatDataInput(variable) {
-	if (typeof variable === 'string') {
-		variable = variable.replace(/\D/g,'');
+	if (typeof variable === "string") {
+		variable = variable.replace(/\D/g,"");
 	}
 
 	return variable;
@@ -21,9 +21,9 @@ function formatDataInput(variable) {
 // Sort the Column Data.
 function sortColumnData(columnData, col, sortOrder) {
 	return columnData.sort((a, b) => {
-		if (sortOrder === 'ASC') {
+		if (sortOrder === "ASC") {
 			return formatDataInput(a[col]) - formatDataInput(b[col]);
-		} else if (sortOrder === 'DESC') {
+		} else if (sortOrder === "DESC") {
 			return formatDataInput(b[col]) - formatDataInput(a[col]);
 		}
 
@@ -40,12 +40,12 @@ class App extends Component {
 	rangePerPage: 50,
 	result: null,
 	query: null,
-	sortOrder: 'ASC',
+	sortOrder: "ASC",
 	sortColumn: null
   };
 
 clearArrows() {
-	const columnElems = document.getElementsByClassName('table-container__table__columnHeader');
+	const columnElems = document.getElementsByClassName("table-container__table__columnHeader");
 
 	// Find and Remove Arrow.
 	for (let i = 0; i < columnElems.length; i++) {
@@ -58,18 +58,18 @@ exportCSV() {
 	const headerRow = [...Object.keys(this.state.result[0])];
 
 	// Print out the headers.
-	let csv = headerRow.join(',') + '\n';
+	let csv = headerRow.join(",") + "\n";
 
 	// Loop through all lines of data and create rows.
 	for (let line of this.getResultRows()) {
 		csv += Object.values(line).map(e => {
 			// Parse any comma Strings to Floats.
-			if (typeof e === 'string' && e.indexOf(',') > -1) {
-				e = parseFloat(e.replace(',',''))
+			if (typeof e === "string" && e.indexOf(",") > -1) {
+				e = parseFloat(e.replace(",",""))
 			}
 
 			return e;
-		}).join(',') + '\n';
+		}).join(",") + "\n";
 	}
 
 	// Encode the CSV data and then allow the user to download the generated file.
@@ -84,7 +84,7 @@ getResultRows() {
 	let result = [];
 
 	if (this.state.result) {
-		// Display Paginated results if there's sufficient data and Pagination is enabled.
+		// Display Paginated results if there"s sufficient data and Pagination is enabled.
 		if ((this.state.result.length >= this.state.rangePerPage) && this.state.isPaginationActive) {
 			for (let i = this.state.fromRange; i <= (this.state.rangePerPage + this.state.fromRange); i++) {				
 				if (this.state.result[i] !== undefined) {
@@ -101,7 +101,7 @@ getResultRows() {
 }
 
 getSortOrder(sortOrder) {
-	return sortOrder === 'ASC' ? UP_ARROW : DOWN_ARROW
+	return sortOrder === "ASC" ? UP_ARROW : DOWN_ARROW
 }
 
 isThereMoreData() {
@@ -131,7 +131,7 @@ previousPage() {
 
 search(input) {
 	// Search and return a Player using part of or the entire name.
-	const regexp = new RegExp(input.target.value, 'i');
+	const regexp = new RegExp(input.target.value, "i");
 	let result = this.state.rushingData.filter(player => regexp.test(player.Player));
 
 	// Persist sort order and column with searched data.
@@ -151,10 +151,10 @@ sortColumn(col, sortOrder, e) {
 	const elem = e.currentTarget || null;
 
 	// Change Order of Sort Direction.
-	if (!sortOrder || sortOrder === 'ASC') {
-		sortOrder = 'DESC';
-	} else if (sortOrder === 'DESC') {
-		sortOrder = 'ASC';
+	if (!sortOrder || sortOrder === "ASC") {
+		sortOrder = "DESC";
+	} else if (sortOrder === "DESC") {
+		sortOrder = "ASC";
 	}
 
 	// Sort based on Sort Order and Data.
@@ -165,8 +165,8 @@ sortColumn(col, sortOrder, e) {
 
 	// Place Arrow in Clicked Column with updated direction.
 	if (elem) {
-		const arrowElem = `<span class='table-container__table__sortArrow'>${this.getSortOrder(sortOrder)}</span>`;
-		elem.insertAdjacentHTML('beforeend', arrowElem);
+		const arrowElem = `<span class="table-container__table__sortArrow">${this.getSortOrder(sortOrder)}</span>`;
+		elem.insertAdjacentHTML("beforeend", arrowElem);
 	}
 
 	this.setState({
@@ -195,8 +195,8 @@ componentDidMount() {
 
 		// Check to prevent test failures.
 		if(left_arrow !== undefined) {
-			left_arrow.insertAdjacentHTML('beforeend', LEFT_ARROW);
-			right_arrow.insertAdjacentHTML('beforeend', RIGHT_ARROW);
+			left_arrow.insertAdjacentHTML("beforeend", LEFT_ARROW);
+			right_arrow.insertAdjacentHTML("beforeend", RIGHT_ARROW);
 		}
 	});
 }
@@ -204,8 +204,8 @@ componentDidMount() {
 render() {
 	const result = this.getResultRows();
 	const paginationClasses = classNames(
-		'nav__interactive__pagination',
-		this.state.isPaginationActive ? '' : '--inactive'
+		"nav__interactive__pagination",
+		this.state.isPaginationActive ? "" : "--inactive"
 	);
 	let paginationFromArrowClasses = null;
 	let paginationToArrowClasses = null;
@@ -213,12 +213,12 @@ render() {
 	// Set classes for Pagination controls.
 	if (this.state.result) {
 		paginationFromArrowClasses = classNames(
-			'nav__interactive__nav_arrow left_arrow',
-			this.state.pageNumber === 1 ? '--inactive' : ''
+			"nav__interactive__nav_arrow left_arrow",
+			this.state.pageNumber === 1 ? "--inactive" : ""
 		);
 		paginationToArrowClasses = classNames(
-			'nav__interactive__nav_arrow right_arrow',
-			this.isThereMoreData() ? '' : '--inactive'
+			"nav__interactive__nav_arrow right_arrow",
+			this.isThereMoreData() ? "" : "--inactive"
 		);
 	}	
 
@@ -238,36 +238,38 @@ render() {
 			togglePagination={this.togglePagination.bind(this)} />
 			<section className="table-container">
 				<div className="table-container__table">
-					<div className='table-container__table__header table-container__row departures'>
-						<div className='table-container__table__data table-container__table__columnHeader' title="Player's name">Player</div>
-						<div className='table-container__table__data table-container__table__columnHeader' title="Player's team abreviation">Team</div>
-						<div className='table-container__table__data table-container__table__columnHeader' title="Player's postion">Position</div>
-						<div className='table-container__table__data table-container__table__columnHeader' title="Rushing Attempts">Att</div>
-						<div className='table-container__table__data table-container__table__columnHeader' title="Rushing Attempts Per Game Average">Att/G</div>
-						<div className='table-container__table__data table-container__table__columnHeader table-container__table__columnHeader--sortable'
+				{result.length > 0 && (
+					<div className="table-container__row table-container__table__header">
+						<div className="table-container__table__data table-container__table__columnHeader" title="Player's name">Player</div>
+						<div className="table-container__table__data table-container__table__columnHeader" title="Player's team abreviation">Team</div>
+						<div className="table-container__table__data table-container__table__columnHeader" title="Player's postion">Position</div>
+						<div className="table-container__table__data table-container__table__columnHeader" title="Rushing Attempts">Att</div>
+						<div className="table-container__table__data table-container__table__columnHeader" title="Rushing Attempts Per Game Average">Att/G</div>
+						<div className="table-container__table__data table-container__table__columnHeader table-container__table__columnHeader--sortable"
 							title="Total Rushing Yards"
-							onClick={elem => this.sortColumn('Yds', this.state.sortOrder, elem)}>Yds</div>
-						<div className='table-container__table__data table-container__table__columnHeader' title="Rushing Average Yards Per Attempt">Avg</div>
-						<div className='table-container__table__data table-container__table__columnHeader' title="Rushing Yards Per Game">Yds/G</div>
-						<div className='table-container__table__data table-container__table__columnHeader table-container__table__columnHeader--sortable'
+							onClick={elem => this.sortColumn("Yds", this.state.sortOrder, elem)}>Yds</div>
+						<div className="table-container__table__data table-container__table__columnHeader" title="Rushing Average Yards Per Attempt">Avg</div>
+						<div className="table-container__table__data table-container__table__columnHeader" title="Rushing Yards Per Game">Yds/G</div>
+						<div className="table-container__table__data table-container__table__columnHeader table-container__table__columnHeader--sortable"
 							title="Total Rushing Touchdowns"
-							onClick={elem => this.sortColumn('TD', this.state.sortOrder, elem)}>TD</div>
-						<div className='table-container__table__data table-container__table__columnHeader table-container__table__columnHeader--sortable'
+							onClick={elem => this.sortColumn("TD", this.state.sortOrder, elem)}>TD</div>
+						<div className="table-container__table__data table-container__table__columnHeader table-container__table__columnHeader--sortable"
 							title="Longest Rush"
-							onClick={elem => this.sortColumn('Lng', this.state.sortOrder, elem)}>Lng</div>
-						<div className='table-container__table__data table-container__table__columnHeader' title="Rushing First Downs">1st</div>
-						<div className='table-container__table__data table-container__table__columnHeader' title="Rushing First Down Percentage">1st%</div>
-						<div className='table-container__table__data table-container__table__columnHeader' title="Rushing 20+ Yards Each">20+</div>
-						<div className='table-container__table__data table-container__table__columnHeader' title="Rushing 40+ Yards Each">40+</div>
-						<div className='table-container__table__data table-container__table__columnHeader' title="Rushing Fumbles">FUM</div>
+							onClick={elem => this.sortColumn("Lng", this.state.sortOrder, elem)}>Lng</div>
+						<div className="table-container__table__data table-container__table__columnHeader" title="Rushing First Downs">1st</div>
+						<div className="table-container__table__data table-container__table__columnHeader" title="Rushing First Down Percentage">1st%</div>
+						<div className="table-container__table__data table-container__table__columnHeader" title="Rushing 20+ Yards Each">20+</div>
+						<div className="table-container__table__data table-container__table__columnHeader" title="Rushing 40+ Yards Each">40+</div>
+						<div className="table-container__table__data table-container__table__columnHeader" title="Rushing Fumbles">FUM</div>
 					</div>
-					{result ? result.map((playerData, i) =>
-						<div className='table-container__table__row' key={i}>
-							<Row {...playerData} />
-						</div>
-					) : (<div className='table-container__table__row --no-data'>
-						<span className='table-container__table__data'>None</span>
-						</div>)}
+				)}
+				{result.length > 0 ? result.map((playerData, i) =>
+					<div className="table-container__table__row" key={i}>
+						<Row {...playerData} />
+					</div>
+				) : (<div className="table-container__table__row --no-data">
+						<span className="table-container__table__data">Sorry. There's no results.</span>
+					</div>)}
 				</div>
 			</section>
 		</div>
